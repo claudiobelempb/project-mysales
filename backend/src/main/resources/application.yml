@@ -1,0 +1,11 @@
+server:
+  port: 8080
+  servlet:
+    contextPath: /api
+spring:
+  application:
+    name: my-sales
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:test}
+
+
