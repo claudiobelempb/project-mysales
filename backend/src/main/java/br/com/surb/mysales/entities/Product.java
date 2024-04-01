@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_product")
@@ -18,38 +20,61 @@ public class Product implements Serializable {
   private Long id;
   private String sku;
   private String name;
+  @Column(precision = 16, scale = 2)
   private BigDecimal price;
   private String description;
 
-  public Product() {
-  }
+  @ManyToMany
+  @JoinTable(name = "tb_product_category",
+    joinColumns = @JoinColumn(name = "product_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_id"))
+  private Set<Category> categories = new HashSet<>();
 
-  public Product(Builder builder) {
-    id = builder.id;
-    sku = builder.sku;
-    name = builder.name;
-    price = builder.price;
-    description = builder.description;
+  public Product() {
   }
 
   public Long getId() {
     return id;
   }
 
+  public void setId(Long id) {
+    this.id = id;
+  }
+
   public String getSku() {
     return sku;
+  }
+
+  public void setSku(String sku) {
+    this.sku = sku;
   }
 
   public String getName() {
     return name;
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public BigDecimal getPrice() {
     return price;
   }
 
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
+
   public String getDescription() {
     return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Set<Category> getCategories() {
+    return categories;
   }
 
   @Override
@@ -65,53 +90,5 @@ public class Product implements Serializable {
   @Override
   public int hashCode() {
     return id != null ? id.hashCode() : 0;
-  }
-
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public static final class Builder {
-    private Long id;
-    private String sku;
-    private String name;
-    private BigDecimal price;
-    private String description;
-
-    private Builder() {
-    }
-
-    public static Builder aProduct() {
-      return new Builder();
-    }
-
-    public Builder id(Long id) {
-      this.id = id;
-      return this;
-    }
-
-    public Builder sku(String sku) {
-      this.sku = sku;
-      return this;
-    }
-
-    public Builder name(String name) {
-      this.name = name;
-      return this;
-    }
-
-    public Builder price(BigDecimal price) {
-      this.price = price;
-      return this;
-    }
-
-    public Builder description(String description) {
-      this.description = description;
-      return this;
-    }
-
-    public Product build() {
-     return new Product(this);
-    }
   }
 }

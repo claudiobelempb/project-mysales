@@ -8,22 +8,29 @@ import {
   InputRoot,
   InputTextArea
 } from '@/components/InputRoot';
+import { ProductResponse } from '@/http/response/ProductResponse';
+import { ProductCreateService } from '@/services/product/ProductCreateService';
 import { useState } from 'react';
 
 export default function Products() {
   const [sku, setSku] = useState('');
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState(0);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
   const handleSubmit = () => {
-    const product = {
+    const product: ProductResponse = {
       sku,
       price,
       name,
       description
     };
-    console.log(product);
+
+    ProductCreateService(product)
+      .then(response => console.log('ProductCreateService =>', response))
+      .catch(erro => console.log(erro));
+
+    // console.log('Products =>', product);
   };
 
   return (
@@ -56,7 +63,7 @@ export default function Products() {
                 placeholder='Digite o Preço do produto'
                 type='text'
                 value={price}
-                onChange={e => setPrice(e.target.value)}
+                onChange={e => setPrice(parseFloat(e.target.value))}
               />
             </InputRoot>
           </div>

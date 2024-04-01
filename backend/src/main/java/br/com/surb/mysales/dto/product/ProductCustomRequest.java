@@ -1,13 +1,15 @@
 package br.com.surb.mysales.dto.product;
 
+import br.com.surb.mysales.dto.category.CategoryResponse;
 import br.com.surb.mysales.shared.constants.ConstantValidator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
 
-public record ProductRequest(
+public record ProductCustomRequest(
    Long id,
    @NotBlank(message = ConstantValidator.REQUIRED_FIELD)
    String sku,
@@ -15,7 +17,8 @@ public record ProductRequest(
    @NotBlank(message = ConstantValidator.REQUIRED_FIELD)
    String name,
    BigDecimal price,
-   String description
+   String description,
+   Set<CategoryResponse> categories
 ) implements Serializable {
 
   @Serial

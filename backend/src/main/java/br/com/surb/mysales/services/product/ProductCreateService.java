@@ -1,7 +1,7 @@
 package br.com.surb.mysales.services.product;
 
-import br.com.surb.mysales.dto.product.ProductRequest;
-import br.com.surb.mysales.dto.product.ProductResponse;
+import br.com.surb.mysales.dto.product.ProductCreateRequest;
+import br.com.surb.mysales.dto.product.ProductCreateResponse;
 import br.com.surb.mysales.entities.Product;
 import br.com.surb.mysales.mapper.ProductMapper;
 import br.com.surb.mysales.repositories.ProductRepository;
@@ -17,9 +17,10 @@ public class ProductCreateService {
   }
 
   @Transactional
-  public ProductResponse execute(ProductRequest request) {
-    Product entity = ProductMapper.toRequest(request);
+  public ProductCreateResponse execute(ProductCreateRequest request) {
+    Product entity = ProductMapper.toCreateRequest(request);
     entity = productRepository.save(entity);
-    return ProductMapper.toResponse(entity);
+    return ProductMapper.toCreateResponse(entity);
+
   }
 }
