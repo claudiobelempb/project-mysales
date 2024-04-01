@@ -4,9 +4,16 @@ import br.com.surb.mysales.dto.category.CategoryResponse;
 import br.com.surb.mysales.dto.product.*;
 import br.com.surb.mysales.entities.Category;
 import br.com.surb.mysales.entities.Product;
+import br.com.surb.mysales.repositories.CategoryRepository;
 import java.util.stream.Collectors;
 
 public final class ProductMapper {
+  private final CategoryRepository categoryRepository;
+
+  public ProductMapper(CategoryRepository categoryRepository) {
+    this.categoryRepository = categoryRepository;
+  }
+
   public static Product toRequest(ProductRequest request){
     Product response = new Product();
 
@@ -40,13 +47,13 @@ public final class ProductMapper {
     response.setPrice(request.price());
     response.setDescription(request.description());
 
-    response.getCategories().clear();
+    /*response.getCategories().clear();
     for (CategoryResponse cat: request.categories()){
       Category category = new Category();
       category.setId(cat.id());
       category.setName(cat.name());
       response.getCategories().add(category);
-    }
+    }*/
 
     return response;
   }
