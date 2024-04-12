@@ -1,6 +1,7 @@
 export type ProductRequest = {
+  id?: number;
   sku: string;
   name: string;
-  price: number;
+  price: number | string;
   description: string;
 };

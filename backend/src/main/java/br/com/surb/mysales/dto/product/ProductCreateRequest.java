@@ -13,10 +13,7 @@ import java.util.Set;
 
 public record ProductCreateRequest(
    Long id,
-   @NotBlank(message = ConstantValidator.REQUIRED_FIELD)
    String sku,
-   @Size(min = 5, max = 60, message = ConstantValidator.REQUIRED_SIZE_MESSAGE)
-   @NotBlank(message = ConstantValidator.REQUIRED_FIELD)
    String name,
    BigDecimal price,
    String description,

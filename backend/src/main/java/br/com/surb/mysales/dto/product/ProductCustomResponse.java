@@ -11,8 +11,7 @@ public record ProductCustomResponse(
    String sku,
    String name,
    BigDecimal price,
-   String description,
-   Set<CategoryResponse> categories
+   String description
 ) implements Serializable {
 
   @Serial

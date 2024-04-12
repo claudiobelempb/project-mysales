@@ -7,8 +7,7 @@ import java.util.Set;
 
 public record CategoryCustomResponse(
   Long id,
-  String name,
-  Set<ProductCustomResponse> products
+  String name
 ) implements Serializable {
 
   @Serial

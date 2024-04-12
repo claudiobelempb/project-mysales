@@ -1,9 +1,7 @@
 package br.com.surb.mysales.services.product;
 
-import br.com.surb.mysales.dto.category.CategoryResponse;
-import br.com.surb.mysales.dto.product.ProductCreateRequest;
-import br.com.surb.mysales.dto.product.ProductCreateResponse;
-import br.com.surb.mysales.entities.Category;
+import br.com.surb.mysales.dto.product.ProductRequest;
+import br.com.surb.mysales.dto.product.ProductResponse;
 import br.com.surb.mysales.entities.Product;
 import br.com.surb.mysales.mapper.ProductMapper;
 import br.com.surb.mysales.repositories.CategoryRepository;
@@ -22,16 +20,12 @@ public class ProductCreateService {
   }
 
   @Transactional
-  public ProductCreateResponse execute(ProductCreateRequest request) {
-    Product entity = ProductMapper.toCreateRequest(request);
-    entity.getCategories().clear();
-
-    for (CategoryResponse cat: request.categories()){
-      Category category = categoryRepository.getReferenceById(cat.id());
-      entity.getCategories().add(category);
-    }
-    entity = productRepository.save(entity);
-    return ProductMapper.toCreateResponse(entity);
+  public ProductResponse execute(ProductRequest request) {
+    Product response = ProductMapper.toRequest(request);
+    System.out.println(response);
+    System.out.println(response.getId());
+    response = productRepository.save(response);
+    return ProductMapper.toResponse(response);
 
   }
 }

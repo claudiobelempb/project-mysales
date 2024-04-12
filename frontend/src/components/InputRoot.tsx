@@ -1,35 +1,33 @@
 import { ComponentProps } from 'react';
 
-type InputMessageProps = ComponentProps<'p'>;
+type InputAlertProps = {
+  message: string;
+  field?: string;
+  error?: boolean;
+  type: 'error' | 'info' | 'success';
+  color: 'red' | 'blue' | 'green';
+} & ComponentProps<'p'>;
 type InputTextAreaProps = ComponentProps<'textarea'>;
 type InputRootProps = ComponentProps<'div'>;
 type LabelRootProps = ComponentProps<'label'>;
-type InputProps = ComponentProps<'input'>;
+type InputProps = {
+  currentcy?: boolean;
+} & ComponentProps<'input'>;
 
 export const InputRoot: React.FC<InputRootProps> = ({ ...props }) => {
   return (
-    <div {...props} className={`group mb-6 ${props.className}`}>
+    <div {...props} className={`group space-y-2 ${props.className}`}>
       {props.children}
     </div>
   );
 };
 
-export const InputMessage: React.FC<InputMessageProps> = ({ ...props }) => {
-  return (
-    <p
-      className={`font-medium mt-2 text-sm text-gray-600 dark:text-gray-500 ${props.className}`}
-    >
-      {props.children}
-    </p>
-  );
-};
-
 export const InputLabel: React.FC<LabelRootProps> = ({ ...props }) => {
   return (
-    <div className='mb-6'>
+    <div className='space-y-2'>
       <label
         htmlFor={props.htmlFor}
-        className={`block mb-2 text-sm font-medium text-gray-900 dark:text-gray ${props.className}`}
+        className={`block space-y-2 text-sm font-medium text-gray-900 dark:text-gray ${props.className}`}
       >
         {props.children}
       </label>

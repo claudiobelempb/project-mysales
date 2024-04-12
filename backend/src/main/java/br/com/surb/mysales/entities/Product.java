@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -24,11 +25,8 @@ public class Product implements Serializable {
   private BigDecimal price;
   private String description;
 
-  @ManyToMany
-  @JoinTable(name = "tb_product_category",
-    joinColumns = @JoinColumn(name = "product_id"),
-    inverseJoinColumns = @JoinColumn(name = "category_id"))
-  private Set<Category> categories = new HashSet<>();
+  @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+  private Instant createdAt;
 
   public Product() {
   }
@@ -73,8 +71,13 @@ public class Product implements Serializable {
     this.description = description;
   }
 
-  public Set<Category> getCategories() {
-    return categories;
+  public Instant getCreatedAt() {
+    return createdAt;
+  }
+
+  @PrePersist
+  public void prePersist() {
+      createdAt = Instant.now();
   }
 
   @Override
@@ -90,5 +93,17 @@ public class Product implements Serializable {
   @Override
   public int hashCode() {
     return id != null ? id.hashCode() : 0;
+  }
+
+  @Override
+  public String toString() {
+    return "Product{" +
+      "id=" + id +
+      ", sku='" + sku + '\'' +
+      ", name='" + name + '\'' +
+      ", price=" + price +
+      ", description='" + description + '\'' +
+      ", createdAt=" + createdAt +
+      '}';
   }
 }

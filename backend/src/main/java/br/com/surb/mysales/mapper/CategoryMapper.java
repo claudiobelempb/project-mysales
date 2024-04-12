@@ -32,28 +32,13 @@ public final class CategoryMapper {
     response.setId(request.id());
     response.setName(request.name());
 
-    response.getProducts().clear();
-    for(ProductCustomResponse prod: request.products()){
-      Product product = new Product();
-      product.setId(prod.id());
-      response.getProducts().add(product);
-    }
-
     return response;
   }
 
   public static CategoryCustomResponse toCustomResponse(Category entity){
     return new CategoryCustomResponse(
       entity.getId(),
-      entity.getName(),
-      entity.getProducts().stream().map(product -> new ProductCustomResponse(
-        product.getId(),
-        product.getSku(),
-        product.getName(),
-        product.getPrice(),
-        product.getDescription(),
-        product.getCategories().stream().map(category -> new CategoryResponse(category.getId(), category.getName())).collect(Collectors.toSet())
-      )).collect(Collectors.toSet())
+      entity.getName()
     );
   }
 

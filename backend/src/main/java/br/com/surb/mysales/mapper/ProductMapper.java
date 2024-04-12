@@ -1,27 +1,16 @@
 package br.com.surb.mysales.mapper;
 
-import br.com.surb.mysales.dto.category.CategoryResponse;
 import br.com.surb.mysales.dto.product.*;
-import br.com.surb.mysales.entities.Category;
 import br.com.surb.mysales.entities.Product;
-import br.com.surb.mysales.repositories.CategoryRepository;
-import java.util.stream.Collectors;
 
 public final class ProductMapper {
-  private final CategoryRepository categoryRepository;
-
-  public ProductMapper(CategoryRepository categoryRepository) {
-    this.categoryRepository = categoryRepository;
-  }
 
   public static Product toRequest(ProductRequest request){
     Product response = new Product();
-
-    response.setId(request.id());
     response.setSku(request.sku());
     response.setName(request.name());
+    response.setPrice(request.price());
     response.setDescription(request.description());
-
     return response;
   }
 
@@ -31,8 +20,17 @@ public final class ProductMapper {
       entity.getSku(),
       entity.getName(),
       entity.getPrice(),
-      entity.getDescription()
+      entity.getDescription(),
+      entity.getCreatedAt()
     );
+  }
+
+  public static Product toRequest(Product entity, ProductRequest request){
+    entity.setSku(request.sku());
+    entity.setName(request.name());
+    entity.setPrice(request.price());
+    entity.setDescription(request.description());
+    return entity;
   }
 
   public static Product toCreateRequest(ProductCreateRequest request){
@@ -46,15 +44,6 @@ public final class ProductMapper {
     response.setName(request.name());
     response.setPrice(request.price());
     response.setDescription(request.description());
-
-    /*response.getCategories().clear();
-    for (CategoryResponse cat: request.categories()){
-      Category category = new Category();
-      category.setId(cat.id());
-      category.setName(cat.name());
-      response.getCategories().add(category);
-    }*/
-
     return response;
   }
 
@@ -67,13 +56,7 @@ public final class ProductMapper {
       entity.getName(),
       entity.getSku(),
       entity.getPrice(),
-      entity.getDescription(),
-      entity.getCategories()
-        .stream()
-        .map(category -> new CategoryResponse(
-          category.getId(),
-          category.getName()))
-        .collect(Collectors.toSet())
+      entity.getDescription()
     );
   }
 
@@ -89,14 +72,6 @@ public final class ProductMapper {
     response.setPrice(request.price());
     response.setDescription(request.description());
 
-    response.getCategories().clear();
-    for (CategoryResponse cat: request.categories()){
-      Category category = new Category();
-      category.setId(cat.id());
-      category.setName(cat.name());
-      response.getCategories().add(category);
-    }
-
     return response;
   }
 
@@ -109,13 +84,8 @@ public final class ProductMapper {
       entity.getName(),
       entity.getSku(),
       entity.getPrice(),
-      entity.getDescription(),
-      entity.getCategories()
-        .stream()
-        .map(category -> new CategoryResponse(
-          category.getId(),
-          category.getName()))
-        .collect(Collectors.toSet())
+      entity.getDescription()
+
     );
   }
 

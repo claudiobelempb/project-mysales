@@ -11,7 +11,7 @@ export const ButtonRoot: React.FC<ButtonRootProps> = ({
   return (
     <button
       {...props}
-      className={`bg-white max-w-full py-3 rounded-md hover:bg-gray-400 hover:text-white md:max-w-40 ${className}`}
+      className={`group bg-white max-w-full py-3 rounded-md hover:bg-gray-400 hover:text-white md:max-w-40 ${className}`}
     >
       {children}
     </button>

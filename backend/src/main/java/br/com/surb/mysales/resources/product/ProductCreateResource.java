@@ -1,8 +1,6 @@
 package br.com.surb.mysales.resources.product;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
-import br.com.surb.mysales.dto.product.ProductCreateRequest;
-import br.com.surb.mysales.dto.product.ProductCreateResponse;
 import br.com.surb.mysales.dto.product.ProductRequest;
 import br.com.surb.mysales.dto.product.ProductResponse;
 import br.com.surb.mysales.services.product.ProductCreateService;
@@ -25,9 +23,9 @@ public class ProductCreateResource {
   }
 
   @PostMapping
-  public CompletableFuture<ResponseEntity<ProductCreateResponse>> handle(@Valid @RequestBody ProductCreateRequest request) {
-    ProductCreateResponse response = productCreateService.execute(request);
-    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{productId}").buildAndExpand(response.id()).toUri();
+  public CompletableFuture<ResponseEntity<ProductResponse>> handle(@Valid @RequestBody ProductRequest request) {
+    ProductResponse response = productCreateService.execute(request);
+    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.id()).toUri();
     return supplyAsync(() -> response).thenApply((__) -> ResponseEntity.created(uri).body(response));
   }
 }

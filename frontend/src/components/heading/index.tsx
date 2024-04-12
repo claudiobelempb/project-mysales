@@ -1,17 +1,29 @@
-interface HeadingProps {
-  title: string;
-  subTitle: string;
-  children?: React.ReactNode;
-}
+import { ComponentProps } from 'react';
 
-export const Heading: React.FC<HeadingProps> = ({
-  title,
-  subTitle
-}: HeadingProps) => {
+type HeadingH1Props = {
+  children?: React.ReactNode;
+} & ComponentProps<'h1'>;
+
+export const HeadingH1: React.FC<HeadingH1Props> = ({ children, ...props }) => {
   return (
-    <div>
-      <h1 className='font-black text-3 text-gray-900'>{title}</h1>
-      <h2 className='font-light text-sm text-gray-600'>{subTitle}</h2>
-    </div>
+    <>
+      <h1 {...props} className='font-black text-3 text-gray-900 mb-2'>
+        {children}
+      </h1>
+    </>
+  );
+};
+
+type HeadingH2Props = {
+  children?: React.ReactNode;
+} & ComponentProps<'h2'>;
+
+export const HeadingH2: React.FC<HeadingH2Props> = ({ children, ...props }) => {
+  return (
+    <>
+      <h2 {...props} className='font-light text-sm text-gray-600 mb-2'>
+        {children}
+      </h2>
+    </>
   );
 };
