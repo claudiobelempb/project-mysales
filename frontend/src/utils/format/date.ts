@@ -6,11 +6,11 @@ export const formatDate = (data: string): string => {
   }).format(new Date(data));
 };
 
-export const dateFormatted = (str: string): string => {
+export const FORMATTED_DATE = (str: string): string => {
   let data = new Date(str);
   return data.toLocaleDateString('pt-br', {
     day: '2-digit',
-    month: 'numeric',
+    month: '2-digit',
     year: 'numeric'
   });
 };

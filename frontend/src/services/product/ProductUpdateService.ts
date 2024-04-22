@@ -1,13 +1,11 @@
 import { api } from '@/http/api';
-import { ProductRequest } from '@/http/request/ProductRequest';
 import { ProductResponse } from '@/http/response/ProductResponse';
 import { AxiosResponse } from 'axios';
 
 export const ProductUpdateService = async (
-  request: ProductRequest
+  product: ProductResponse
 ): Promise<ProductResponse> => {
   const response: AxiosResponse<ProductResponse> =
-    await api.put<ProductRequest>(`/v1/products/${request.id}`, request);
-  console.log('Response =>', response.data);
+    await api.put<ProductResponse>(`/v1/products/${product.id}`, product);
   return response.data;
 };

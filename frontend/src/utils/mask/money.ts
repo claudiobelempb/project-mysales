@@ -1,4 +1,4 @@
-export const maskReal = (str: string) => {
+export const MASKREAL = (str: string) => {
   const value: string[] = (
     (parseInt(str.replace(/\D/g, '')) / 100).toFixed(2) + ''
   ).split('.');

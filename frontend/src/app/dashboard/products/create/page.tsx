@@ -13,9 +13,10 @@ import { ProductCreateService } from '@/services/product/ProductCreateService';
 import { ConstantValidationError } from '@/utils/constant/ConstantValidError';
 import { formatDate } from '@/utils/format/date';
 import { formatBigDecimal } from '@/utils/format/money';
-import { maskReal } from '@/utils/mask/money';
+import { MASKREAL } from '@/utils/mask/money';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
@@ -60,10 +61,11 @@ export default function Products() {
   const [createdAt, SetCreatedAt] = useState('');
   const [errors, setErrors] = useState<errorsProps>({} as errorsProps);
 
+  const router = useRouter();
+
   const handleSubmit = async () => {
     try {
-      const product: fieldsProps = {
-        id: parseInt(id),
+      const product: ValidProductType = {
         sku,
         price: formatBigDecimal(price),
         name,
@@ -79,6 +81,7 @@ export default function Products() {
       setId(String(response.id) ?? '');
       SetCreatedAt(response.createdAt ?? '');
       toast.success('Produto cadastrao com sucesso!');
+      router.push('/dashboard/products');
 
       setErrors({});
     } catch (error) {
@@ -158,8 +161,8 @@ export default function Products() {
               <InputDefault
                 placeholder='Digite o Preço do produto'
                 type='text'
-                value={maskReal(price)}
-                onChange={e => setPrice(maskReal(e.target.value))}
+                value={MASKREAL(price)}
+                onChange={e => setPrice(MASKREAL(e.target.value))}
                 maxLength={16}
               />
               {errors.price && (

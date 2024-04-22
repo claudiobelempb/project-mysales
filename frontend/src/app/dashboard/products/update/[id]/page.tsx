@@ -8,15 +8,21 @@ import {
   InputRoot,
   InputTextArea
 } from '@/components/InputRoot';
-import { ProductResponse } from '@/http/response/ProductResponse';
+import {
+  ProductFiledResponse,
+  ProductResponse
+} from '@/http/response/ProductResponse';
 import { ProductFindByIdService } from '@/services/product/ProductFindByIdService';
 import { ProductUpdateService } from '@/services/product/ProductUpdateService';
-import { dateFormatted } from '@/utils/format/date';
-import { formatBigDecimal } from '@/utils/format/money';
-import { limitWords } from '@/utils/Helpers';
-import { maskReal } from '@/utils/mask/money';
+import { FORMATTED_DATE } from '@/utils/format/date';
+import {
+  FORMAR_REAL_V1,
+  FORMATBIGDECIMAL,
+  FORMATREAL
+} from '@/utils/format/money';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -28,44 +34,13 @@ type ProductsProps = {
   params: ParamsProps;
 };
 
-type fieldsProps = {
-  id: number;
-  sku: string;
-  name: string;
-  price: number | string;
-  description: string;
-};
-
 export default function Products({ params }: ProductsProps) {
-  const [fields, setFields] = useState<ProductResponse>({} as ProductResponse);
+  const [fields, setFields] = useState<ProductFiledResponse>(
+    {} as ProductFiledResponse
+  );
+  const router = useRouter();
 
   const productId = params.id;
-  console.log(
-    'Email => ',
-    limitWords('claudio c lima @hotmail com', 10, '...')
-  );
-
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    try {
-      const product: fieldsProps = {
-        id: parseFloat(productId),
-        sku: fields.sku,
-        price: formatBigDecimal(`${fields.price}`),
-        name: fields.name,
-        description: fields.description
-      };
-
-      const response = await ProductUpdateService(product);
-      setFields({
-        ...response,
-        createdAt: dateFormatted(`${response.createdAt}`)
-      });
-      toast.success('Produto atualizado com sucesso!');
-    } catch (error) {
-      console.log('Error =>', error);
-    }
-  };
 
   function handleChange(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -73,19 +48,48 @@ export default function Products({ params }: ProductsProps) {
     const { name, value } = event.target;
     const field = { ...fields, [name]: value };
 
-    setFields({ ...field, price: maskReal(`${field.price}`) });
+    setFields({
+      sku: field.sku,
+      name: field.name,
+      price: FORMATREAL(`${field.price}`),
+      description: field.description
+    });
   }
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    try {
+      const product: ProductResponse = {
+        id: +productId,
+        sku: fields.sku,
+        price: FORMATBIGDECIMAL(`${fields.price}`),
+        name: fields.name,
+        description: fields.description
+      };
+
+      await ProductUpdateService(product);
+
+      toast.success('Produto atualizado com sucesso!');
+      router.push('/dashboard/products');
+    } catch (error) {
+      console.log(JSON.parse(JSON.stringify(error)));
+    }
+  };
 
   useEffect(() => {
     (async function loadingProduct() {
       try {
         const response = await ProductFindByIdService(productId);
         setFields({
-          ...response,
-          createdAt: dateFormatted(`${response.createdAt}`)
+          id: response.id,
+          sku: response.sku,
+          name: response.name,
+          price: FORMAR_REAL_V1(response.price || 0.0),
+          description: response.description,
+          createdAt: FORMATTED_DATE(`${response.createdAt}`)
         });
       } catch (error) {
-        console.log(error);
+        console.log(JSON.parse(JSON.stringify(error)));
       }
     })();
   }, [productId]);
@@ -115,7 +119,7 @@ export default function Products({ params }: ProductsProps) {
                 className='bg-gray-400 font-semibold'
                 disabled
                 type='text'
-                value={fields.id}
+                value={fields.sku}
               />
             </InputRoot>
             <InputRoot className='w-full'>
@@ -146,7 +150,6 @@ export default function Products({ params }: ProductsProps) {
               <InputDefault
                 name='price'
                 className='placeholder:text-gray-700'
-                placeholder={`${fields.price ? fields.price : 0.0}`}
                 type='text'
                 value={fields.price}
                 onChange={handleChange}

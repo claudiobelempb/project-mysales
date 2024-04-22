@@ -2,6 +2,7 @@ package br.com.surb.mysales.mapper;
 
 import br.com.surb.mysales.dto.product.*;
 import br.com.surb.mysales.entities.Product;
+import org.springframework.data.domain.Page;
 
 public final class ProductMapper {
 
@@ -87,6 +88,20 @@ public final class ProductMapper {
       entity.getDescription()
 
     );
+  }
+
+  public static Page<ProductResponse> toPageResponse(Page<Product> products){
+    if (products == null) {
+      return null;
+    }
+    return products.map(response -> new ProductResponse(
+      response.getId(),
+      response.getSku(),
+      response.getName(),
+      response.getPrice(),
+      response.getDescription(),
+      response.getCreatedAt()
+    ));
   }
 
 }
