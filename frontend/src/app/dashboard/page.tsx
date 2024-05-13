@@ -1,9 +1,9 @@
-import { Header } from '@/components/header';
+import { HeaderRoot } from '@/components/HeaderRoot';
 
 export default function Page() {
   return (
     <div>
-      <Header
+      <HeaderRoot
         title='Página Inicial'
         subTitle='Estamos construindo um template admin!'
       />

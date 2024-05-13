@@ -5,9 +5,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tb_product")
@@ -23,12 +22,34 @@ public class Product implements Serializable {
   private String name;
   @Column(precision = 16, scale = 2)
   private BigDecimal price;
+  private Integer stock;
+  @Column(columnDefinition = "text")
   private String description;
 
-  @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+  /*@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")*/
   private Instant createdAt;
 
+  @ManyToOne
+  @JoinColumn(name = "category_id")
+  private Category category;
+
+  @ManyToOne
+  @JoinColumn(name = "supplier_id")
+  private Supplier supplier;
+
   public Product() {
+  }
+
+  public Product(Long id, String sku, String name, BigDecimal price, Integer stock, String description, Instant createdAt, Category category, Supplier supplier) {
+    this.id = id;
+    this.sku = sku;
+    this.name = name;
+    this.price = price;
+    this.stock = stock;
+    this.description = description;
+    this.createdAt = createdAt;
+    this.category = category;
+    this.supplier = supplier;
   }
 
   public Long getId() {
@@ -63,6 +84,14 @@ public class Product implements Serializable {
     this.price = price;
   }
 
+  public Integer getStock() {
+    return stock;
+  }
+
+  public void setStock(Integer stock) {
+    this.stock = stock;
+  }
+
   public String getDescription() {
     return description;
   }
@@ -75,9 +104,30 @@ public class Product implements Serializable {
     return createdAt;
   }
 
+  public void setCreatedAt(Instant createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public Category getCategory() {
+    return category;
+  }
+
+  public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  public Supplier getSupplier() {
+    return supplier;
+  }
+
+  public void setSupplier(Supplier supplier) {
+    this.supplier = supplier;
+  }
+
   @PrePersist
   public void prePersist() {
-      createdAt = Instant.now();
+    sku = String.valueOf(UUID.randomUUID());
+    createdAt = Instant.now();
   }
 
   @Override

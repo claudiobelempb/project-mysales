@@ -1,7 +1,7 @@
 package br.com.surb.mysales.services.product;
 
 import br.com.surb.mysales.dto.product.ProductRequest;
-import br.com.surb.mysales.dto.product.ProductResponse;
+import br.com.surb.mysales.dto.product.ProductDTO;
 import br.com.surb.mysales.entities.Product;
 import br.com.surb.mysales.mapper.ProductMapper;
 import br.com.surb.mysales.repositories.ProductRepository;
@@ -20,12 +20,12 @@ public class ProductUpdateService {
   }
 
   @Transactional
-  public ProductResponse execute(Long id, ProductRequest request) {
+  public ProductDTO execute(Long id, ProductDTO dto) {
     try {
       Product entity = productRepository.getReferenceById(id);
-      entity = ProductMapper.toRequest(entity, request);
+      entity = ProductMapper.toEntityDTO(entity, dto);
       entity = productRepository.save(entity);
-      return ProductMapper.toResponse(entity);
+      return ProductMapper.toDTO(entity);
     } catch (EntityNotFoundException e) {
       throw new ResourceNotFondExecption(ConstantException.ENTITY_NOT_FOUND);
     }

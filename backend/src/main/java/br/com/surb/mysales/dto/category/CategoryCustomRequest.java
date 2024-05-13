@@ -1,6 +1,6 @@
 package br.com.surb.mysales.dto.category;
 
-import br.com.surb.mysales.dto.product.ProductCustomResponse;
+import br.com.surb.mysales.dto.product.ProductCustomDTO;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Set;
@@ -8,7 +8,7 @@ import java.util.Set;
 public record CategoryCustomRequest(
   Long id,
   String name,
-  Set<ProductCustomResponse> products
+  Set<ProductCustomDTO> products
 ) implements Serializable {
 
   @Serial

@@ -1,9 +1,7 @@
 package br.com.surb.mysales.dto.category;
 
-import br.com.surb.mysales.dto.product.ProductCustomResponse;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Set;
 
 public record CategoryCustomResponse(
   Long id,

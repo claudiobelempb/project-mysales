@@ -3,11 +3,8 @@ package br.com.surb.mysales.mapper;
 import br.com.surb.mysales.dto.category.CategoryCustomRequest;
 import br.com.surb.mysales.dto.category.CategoryCustomResponse;
 import br.com.surb.mysales.dto.category.CategoryRequest;
-import br.com.surb.mysales.dto.category.CategoryResponse;
-import br.com.surb.mysales.dto.product.ProductCustomResponse;
+import br.com.surb.mysales.dto.category.CategoryDTO;
 import br.com.surb.mysales.entities.Category;
-import br.com.surb.mysales.entities.Product;
-import java.util.stream.Collectors;
 
 public final class CategoryMapper {
   public static Category toRequest(CategoryRequest request){
@@ -19,8 +16,8 @@ public final class CategoryMapper {
     return response;
   }
 
-  public static CategoryResponse toResponse(Category entity){
-    return new CategoryResponse(
+  public static CategoryDTO toResponse(Category entity){
+    return new CategoryDTO(
       entity.getId(),
       entity.getName()
       );

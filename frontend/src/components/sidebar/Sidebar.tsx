@@ -18,7 +18,12 @@ export default function Sidebar() {
       </div>
       <ul className='flex flex-col gap-3'>
         <SidebarItem url='/dashboard' text='Home' icone={<Home />} />
-        <SidebarItem url='/dashboard/users' text='Usuários' icone={<Users />} />
+        {/*<SidebarItem url='/dashboard/users' text='Usuários' icone={<Users />} />*/}
+        <SidebarItem
+          url='/dashboard/clients'
+          text='Clientes'
+          icone={<Users />}
+        />
         <SidebarItem
           url='/dashboard/products'
           text='Produtos'

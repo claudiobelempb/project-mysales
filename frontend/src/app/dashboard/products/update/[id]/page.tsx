@@ -1,7 +1,7 @@
 'use client';
 
 import { ButtonRoot, ButtonText } from '@/components/ButtonRoot';
-import { Header } from '@/components/header';
+import { HeaderRoot } from '@/components/HeaderRoot';
 import {
   InputDefault,
   InputLabel,
@@ -96,16 +96,13 @@ export default function Products({ params }: ProductsProps) {
 
   return (
     <>
-      <Header
+      <HeaderRoot
         title='Página Produtos'
         subTitle='Aqui voçê irá gerenciar seus Produtos!'
       />
       <div className='w-full flex items-center py-4 '>
-        <Link
-          className='bg-gray-500 p-1 rounded-sm text-white'
-          href='/dashboard/products'
-        >
-          <ChevronLeft />
+        <Link href='/dashboard/products'>
+          <ChevronLeft className='bg-green-500 p-1 rounded-sm text-white hover:bg-green-400 transition-all duration-150' />
         </Link>
       </div>
 
@@ -182,11 +179,9 @@ export default function Products({ params }: ProductsProps) {
           </InputRoot>
           <ButtonRoot
             onClick={handleSubmit}
-            className='bg-white hover:bg-black'
+            className='bg-green-500 rounded-sm text-white hover:bg-green-400 transition-all duration-150'
           >
-            <ButtonText className='text-black group-hover:text-white'>
-              Atualizar
-            </ButtonText>
+            <ButtonText>Atualizar</ButtonText>
           </ButtonRoot>
         </div>
       </div>

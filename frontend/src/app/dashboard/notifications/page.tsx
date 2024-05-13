@@ -1,6 +1,6 @@
 'use client';
 
-import { Header } from '@/components/header';
+import { HeaderRoot } from '@/components/HeaderRoot';
 
 // export const metadata: Metadata = {
 //   title: 'Página Notifications',
@@ -15,7 +15,7 @@ export default function Notifications() {
       
     `}
     >
-      <Header
+      <HeaderRoot
         title='Página Notifications'
         subTitle='Aqui voçê irá gerenciar as suas notificações!'
       />

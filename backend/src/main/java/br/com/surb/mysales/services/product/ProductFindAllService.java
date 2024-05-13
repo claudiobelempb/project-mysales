@@ -1,6 +1,6 @@
 package br.com.surb.mysales.services.product;
 
-import br.com.surb.mysales.dto.product.ProductResponse;
+import br.com.surb.mysales.dto.product.ProductDTO;
 import br.com.surb.mysales.entities.Product;
 import br.com.surb.mysales.mapper.ProductMapper;
 import br.com.surb.mysales.repositories.ProductRepository;
@@ -18,7 +18,7 @@ public class ProductFindAllService {
   }
 
   @Transactional(readOnly = true)
-  public Page<ProductResponse> execute(Pageable pageable) {
+  public Page<ProductDTO> execute(Pageable pageable) {
     Page<Product> products = productRepository.findAll(pageable);
     return ProductMapper.toPageResponse(products);
   }

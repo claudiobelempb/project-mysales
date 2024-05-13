@@ -1,12 +1,13 @@
 'use client';
 
+import { HeaderRoot } from '@/components/HeaderRoot';
 import { LoadingRoot, LoadingSvg } from '@/components/LoadingRoot';
-import { Header } from '@/components/header';
+import { TableActions, TableRoot } from '@/components/TableRoot';
 import { ProductResponse } from '@/http/response/ProductResponse';
 import { ProductDeleteService } from '@/services/product/ProductDeleteService';
 import { ProductFindAllService } from '@/services/product/ProductFindAllService';
-import { FORMAR_REAL_V1 } from '@/utils/format/money';
-import { Edit, Plus, Trash2 } from 'lucide-react';
+import { FORMAR_PRICE_V1 } from '@/utils/format/money';
+import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -14,6 +15,7 @@ import { toast } from 'react-toastify';
 export default function Products() {
   const [content, setContent] = useState<ProductResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDelete, setIsDelete] = useState(false);
 
   const handleDelete = async (id: number) => {
     try {
@@ -26,6 +28,18 @@ export default function Products() {
       console.log(JSON.parse(JSON.stringify(error)));
     }
   };
+
+  const handleConfirm = (id: number) => {
+    console.log(id);
+    if (isDelete) {
+      handleDelete(id);
+      setIsDelete(false);
+    } else {
+      setIsDelete(true);
+    }
+  };
+
+  const handleCancel = () => setIsDelete(false);
 
   useEffect(() => {
     (async function loadingProduct() {
@@ -51,72 +65,61 @@ export default function Products() {
         
       `}
     >
-      <Header
+      <HeaderRoot
         title='Página Produtos'
         subTitle='Aqui voçê irá gerenciar seus Produtos!'
       />
       <div className='w-full flex items-center py-4 gap-2'>
-        <Link
-          className='bg-green-500 p-1 rounded-sm text-white hover:bg-green-400 transition-all duration-150'
-          href='/dashboard/products/create'
-        >
-          <Plus />
+        <Link href='/dashboard/products/create'>
+          <Plus className='bg-green-500 p-1 rounded-sm text-white hover:bg-green-400 transition-all duration-150' />
         </Link>
       </div>
       <div className='mt-7'>
         <h1>Lista de Produtos</h1>
         <div className='flex flex-col gap-2 mt-7'>
           <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
-            <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
-              <thead className='text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400'>
-                <tr>
-                  <th scope='col' className='px-6 py-3'>
-                    Código
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    SKU
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    Nome
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    Price
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    <span>Ações</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {content?.map(product => (
-                  <tr
-                    key={product.id}
-                    className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'
-                  >
-                    <td className='px-6 py-4'>{product.id}</td>
-                    <td className='px-6 py-4'>{product.sku}</td>
-                    <td className='px-6 py-4'>{product.name}</td>
-                    <td className='px-6 py-4'>
-                      {FORMAR_REAL_V1(product.price || 0.0)}
-                    </td>
-                    <td className='px-6 py-4 flex items-center gap-2'>
-                      <Link
-                        className='rounded-sm bg-yellow-500 text-white p-1 hover:bg-yellow-400 transition-all duration-150'
-                        href={`/dashboard/products/update/${product.id}`}
-                      >
-                        <Edit />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(product.id)}
-                        className=' rounded-sm bg-red-500 text-white p-1 hover:bg-red-400 transition-all duration-150'
-                      >
-                        <Trash2 />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <TableRoot
+              key='id'
+              data={content}
+              columns={[
+                {
+                  heading: 'Código',
+                  element(row) {
+                    return <>{row.id}</>;
+                  }
+                },
+                {
+                  heading: 'SKU',
+                  element(row) {
+                    return <>{row.sku}</>;
+                  }
+                },
+                {
+                  heading: 'Nome',
+                  element(row) {
+                    return <>{row.name}</>;
+                  }
+                },
+                {
+                  heading: 'Price',
+                  element(row) {
+                    return <>{FORMAR_PRICE_V1(row.price || 0.0)}</>;
+                  }
+                },
+                {
+                  heading: 'Ações',
+                  element(row) {
+                    return (
+                      <TableActions
+                        entity='products'
+                        id={row.id}
+                        onDelete={handleDelete}
+                      />
+                    );
+                  }
+                }
+              ]}
+            />
           </div>
         </div>
       </div>

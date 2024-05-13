@@ -17,6 +17,6 @@ spring:
       ddl-auto: create
       dialect: org.hibernate.dialect.H2Dialect
       hibernate:
-        format_sql: true
-    open-in-viwer: true
+      format_sql: true
+      open-in-viwer: true
     show-sql: true

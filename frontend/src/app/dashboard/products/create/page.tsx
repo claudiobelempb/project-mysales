@@ -2,7 +2,7 @@
 
 import { AlertRoot } from '@/components/AlertRoot';
 import { ButtonRoot, ButtonText } from '@/components/ButtonRoot';
-import { Header } from '@/components/header';
+import { HeaderRoot } from '@/components/HeaderRoot';
 import {
   InputDefault,
   InputLabel,
@@ -25,7 +25,7 @@ type fieldsProps = {
   id?: number;
   sku: string;
   name: string;
-  price: number | string;
+  price: string;
   description: string;
 };
 
@@ -46,7 +46,7 @@ const validSchema = yup.object().shape({
   description: yup
     .string()
     .trim()
-    .min(10, ConstantValidationError.min(10))
+    /*.min(10, ConstantValidationError.min(10))*/
     .required(ConstantValidationError.required)
 });
 
@@ -65,18 +65,18 @@ export default function Products() {
 
   const handleSubmit = async () => {
     try {
-      const product: ValidProductType = {
+      const product: fieldsProps = {
         sku,
-        price: formatBigDecimal(price),
+        price: `${formatBigDecimal(price)}`,
         name,
         description
       };
 
-      const p = await validSchema.validate(product);
+      const result = await validSchema.validate(product);
 
-      console.log('Products =>', p);
+      console.log('Products =>', result);
 
-      const response = await ProductCreateService(p);
+      const response = await ProductCreateService(product);
 
       setId(String(response.id) ?? '');
       SetCreatedAt(response.createdAt ?? '');
@@ -100,17 +100,14 @@ export default function Products() {
 
   return (
     <>
-      <Header
+      <HeaderRoot
         title='Página Produtos'
         subTitle='Aqui voçê irá gerenciar seus Produtos!'
       />
 
       <div className='w-full flex items-center py-4 '>
-        <Link
-          className='bg-gray-500 p-1 rounded-sm text-white'
-          href='/dashboard/products'
-        >
-          <ChevronLeft />
+        <Link href='/dashboard/products'>
+          <ChevronLeft className='bg-green-500 p-1 rounded-sm text-white hover:bg-green-400 transition-all duration-150' />
         </Link>
       </div>
       <div className='mt-7'>
@@ -215,11 +212,9 @@ export default function Products() {
           </InputRoot>
           <ButtonRoot
             onClick={handleSubmit}
-            className='bg-white hover:bg-black'
+            className='bg-green-500 p-1 rounded-sm text-white hover:bg-green-400 transition-all duration-150'
           >
-            <ButtonText className='text-black group-hover:text-white'>
-              Salvar
-            </ButtonText>
+            <ButtonText>Salvar</ButtonText>
           </ButtonRoot>
         </div>
       </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Header } from '@/components/header';
+import { HeaderRoot } from '@/components/HeaderRoot';
 
 // export const metadata: Metadata = {
 //   title: 'Página Settings',
@@ -15,7 +15,7 @@ export default function Settings() {
       
     `}
     >
-      <Header
+      <HeaderRoot
         title='Página Ajustes & Configurações'
         subTitle='Pesonalize o sistema por aqui!'
       />

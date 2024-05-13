@@ -1,14 +1,9 @@
 package br.com.surb.mysales.dto.product;
 
-import br.com.surb.mysales.dto.category.CategoryResponse;
-import br.com.surb.mysales.entities.Category;
-import br.com.surb.mysales.shared.constants.ConstantValidator;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import br.com.surb.mysales.dto.category.CategoryDTO;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
 public record ProductCreateRequest(
@@ -17,7 +12,7 @@ public record ProductCreateRequest(
    String name,
    BigDecimal price,
    String description,
-   Set<CategoryResponse> categories
+   Set<CategoryDTO> categories
 ) implements Serializable {
 
   @Serial

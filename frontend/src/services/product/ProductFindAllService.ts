@@ -1,10 +1,15 @@
 import { api } from '@/http/api';
-import { ProductPageResponse } from '@/http/response/ProductPageResponse';
+import { PageResponse } from '@/http/response/PageResponse';
+import { ProductDTO } from '@/http/response/ProductResponse';
 import { AxiosResponse } from 'axios';
 
-export const ProductFindAllService = async (): Promise<ProductPageResponse> => {
-  const response: AxiosResponse<ProductPageResponse> = await api.get(
-    `/v1/products`
+/*http://localhost:8080/api/v1/products?page=0&size=12&sort=name,ASC*/
+
+export const ProductFindAllService = async (): Promise<
+  PageResponse<ProductDTO>
+> => {
+  const response: AxiosResponse<PageResponse<ProductDTO>> = await api.get(
+    `/v1/products?page=0&size=12&sort=id,ASC`
   );
   return response.data;
 };

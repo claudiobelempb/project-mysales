@@ -1,6 +1,6 @@
 package br.com.surb.mysales.services.product;
 
-import br.com.surb.mysales.dto.product.ProductResponse;
+import br.com.surb.mysales.dto.product.ProductDTO;
 import br.com.surb.mysales.entities.Product;
 import br.com.surb.mysales.mapper.ProductMapper;
 import br.com.surb.mysales.repositories.ProductRepository;
@@ -19,11 +19,11 @@ public class ProductFindByIdService {
   }
 
   @Transactional(readOnly = true)
-  public ProductResponse execute(Long id) {
+  public ProductDTO execute(Long id) {
     Objects.requireNonNull(id);
     Product response = productRepository
       .findById(id)
       .orElseThrow(() -> new ResourceNotFondExecption(ConstantException.ENTITY_NOT_FOUND));
-    return ProductMapper.toResponse(response);
+    return ProductMapper.toDTO(response);
   }
 }
